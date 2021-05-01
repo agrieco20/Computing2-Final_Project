@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include "Applicant.h"
+//#include <string>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ vector <string> indivResume;
 //}
 int counter = 0; //Acts as a counter that is used to increase the current requirement number (only in console output)
 int totalNumPoints = 0; //Used to determine the total number of points possible to be earned by the applicants and used to calculate the percentage match
+int applicantPoints=0;
 bool status; //Acts as a flag used throughout the program
 string userInput; //Used to store all the information passed by the user to the program (ex: skills being looked for in a resume)
 int placeHold; //Used for exception
@@ -152,6 +154,8 @@ int main(){
 //        }
 //    }
 
+    vector<string> multiWord;
+
     for (int i = 0; i<applicant.copyReqVect.size(); i+=2){//TEST
         for(auto elem : applicant.copyReqVect[i]){ //Checks to see if the user inputted multiple words and splits them up accordingly
             if(isspace(elem)){
@@ -252,8 +256,21 @@ void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of 
     counter++;
     cout << "What is requirement Number " << counter << "? ";
     getline(cin, userInput);
+//    vector<string> splitPut=split(userInput,' ');
     cout << endl;
 //    applicant.setReq(userInput);
+
+//    for(auto elem : splitPut){
+//        applicant->setReq(elem);
+//    }
+    string tempInput;
+    for (int i = 0; i<userInput.size(); i++){ //Sets the input taken from the user to lower case to help with error control
+        tempInput += tolower(userInput[i]);
+    }
+
+    userInput = tempInput;
+    tempInput="";
+
     applicant->setReq(userInput);
 
     do {
