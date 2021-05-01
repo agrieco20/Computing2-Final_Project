@@ -13,7 +13,8 @@ using namespace std;
 
 vector<string> split(string, char); //Distinguishes in the Resumes individual words
 void requirementSet(string, Applicant*); //This is a menu that activates the same number of times the user indicates to the program how many skills they are looking for in their applicants' resumes
-vector<vector<string>> allResumes; //Multidimensional Vector used to store all the resume files
+//vector<vector<string>> allResumes; //NOT USED, Multidimensional Vector used to store all the resume files
+vector <string> indivResume;
 
 //int main () {
 //    cout << "Test" << endl;
@@ -27,14 +28,16 @@ vector<vector<string>> allResumes; //Multidimensional Vector used to store all t
 //    return 0;
 //}
 int counter = 0; //Acts as a counter that is used to increase the current requirement number (only in console output)
+int totalNumPoints = 0; //Used to determine the total number of points possible to be earned by the applicants and used to calculate the percentage match
 bool status; //Acts as a flag used throughout the program
 string userInput; //Used to store all the information passed by the user to the program (ex: skills being looked for in a resume)
 int placeHold; //Used for exception
 string::size_type sz;
+
 int main(){
 
     Applicant applicant; //Temporary
-    vector<string> myVect;
+//    vector<string> myVect;
     //cout << "test" << endl;
     string line; //Used to extract each line from file
 
@@ -45,7 +48,11 @@ int main(){
 
     if (infile.is_open()){
         while(getline(infile, line)){
-            allResumes.push_back(split(line, ' '));
+//            allResumes.push_back(split(line, ' '))
+            vector<string> myvect=split(line, ' ');
+            for(auto elem : myvect) {
+                indivResume.push_back(elem);
+            }
         }
     }
 
@@ -106,16 +113,68 @@ int main(){
 
     applicant.getReq();
 
+//    for(auto elem :allResumes){
+//        for(auto req : applicant.copyReqVect){
+//
+//        }
+//    }
+//
+//    cout << applicant.copyReqVect[0] << endl;
+
+//    int counter2=0;
+//    for(auto elem : indivResume) { //Used to see whether the allResumes vector was receiving the vector sent to it (printed out values within it)
+//       // for (auto word : elem) {
+//            if (elem == applicant.copyReqVect[counter2]) {
+//                cout << elem << endl;
+//                counter2++;
+//            } else {
+//                counter2++;
+//            }
+//        //}
+//    }
+
+//    if (applicant.copyReqVect.empty()){
+    if (applicant.copyReqVect.empty()){
+        cout << "Empty" << endl;
+    }
+
+//    for (int i = 0; i < applicant.copyReqVect.size(); i++){
+//        cout << applicant.copyReqVect[i] << endl;
+//    }
+
+//    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){ //TEST
+//        for (int j = 0; j<indivResume.size(); j++){
+//            for (int k = 0; k<allResumes[j].size(); k++) {
+//                    //cout << j << endl;
+//                if (applicant.copyReqVect[i] == indivResume[j]) {
+//                    cout << "Found" << endl;
+//                }
+//            }
+//        }
+//    }
+
+
+
     // applicant.setReq(userInput);
+
+//    for(auto elem : allResumes){ //Used to see whether the allResumes vector was receiving the vector sent to it (printed out values within it)
+//        for(auto word : elem){
+//            cout<<word+" ";
+//        }
+//    }
+
+//    for (int i = 0; i < applicant.copyReqVect.size(); i++){
+    for (int i = 0; i < applicant.copyReqVect.size(); i++){ //NOT PERMANENT
+        cout << applicant.copyReqVect[i] << endl;
+    }
+//    }
+
+    cout << applicant.copyReqVect[1] << endl; //NOT PERMANENT
 
     infile.close();
     return 0;
 }
 
-
-
-//Applicant applicant;
-//Applicant * ptr_applicant = &applicant;
 
 
 
@@ -143,7 +202,7 @@ vector<string> split(string line, char delimiter) { //May need to make this a vo
     return vect;
 }
 
-void requirementSet(string userInput, Applicant* applicant){ //Sends pointer
+void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of the Applicant object
     counter++;
     cout << "What is requirement Number " << counter << "? ";
     getline(cin, userInput);
@@ -163,6 +222,7 @@ void requirementSet(string userInput, Applicant* applicant){ //Sends pointer
             }else{
 //                applicant.setReq(userInput);
                 applicant->setReq(userInput);
+                totalNumPoints += stoi(userInput);
             }
         }
         catch (exception e) {

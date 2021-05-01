@@ -42,11 +42,11 @@ int main(){
     string line; //Used to extract each line from file
 
     ifstream infile;
-    infile.open ("Abhishek.txt", ios::in);
-//    infile.open ("Smith Resume.txt", ios::in);
+//    infile.open ("Abhishek.txt", ios::in);
+    infile.open ("Smith Resume.txt", ios::in);
 //    infile.open ("resume v6.txt", ios::in);
 
-    if (infile.is_open()){
+    if (infile.is_open()){ //Opens the individual resume and assigns it to its own
         while(getline(infile, line)){
 //            allResumes.push_back(split(line, ' '))
             vector<string> myvect=split(line, ' ');
@@ -59,7 +59,7 @@ int main(){
     cout<<endl<<endl;
 
 
-    do{
+    do{ //Asks the user for how many points
         try {
             cout<<"How many skills are you looking for your applicants to have? ";
             getline(cin, userInput);
@@ -74,8 +74,7 @@ int main(){
             cin.ignore();
             status=false;
         }
-    }
-    while(status == false);
+    } while(status == false);
 
 //        //cout<<"What is your first requirement? ";
 //        counter++;
@@ -111,7 +110,7 @@ int main(){
 
     }
 
-    applicant.getReq();
+//    applicant.getReq();
 
 //    for(auto elem :allResumes){
 //        for(auto req : applicant.copyReqVect){
@@ -134,7 +133,7 @@ int main(){
 //    }
 
 //    if (applicant.copyReqVect.empty()){
-    if (applicant.copyReqVect.empty()){
+    if (applicant.copyReqVect.empty()){ //NOT PERMANENT
         cout << "Empty" << endl;
     }
 
@@ -153,6 +152,55 @@ int main(){
 //        }
 //    }
 
+    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){//TEST
+        for(auto elem : applicant.copyReqVect[i]){ //Checks to see if the user inputted multiple words and splits them up accordingly
+            if(isspace(elem)){
+                multiWord=split(applicant.copyReqVect[i],' ');
+            }
+        }
+//        if(applicant.copyReqVect[i] ==)
+        for (int j = 0; j<indivResume.size(); j++){
+             if(applicant.copyReqVect[i] == indivResume[j]){
+                //cout << "Found Single Word" << endl; //cout Not Permanent
+                //cout<<applicant.copyReqVect[i+1]<<endl;
+                applicantPoints+=stoi(applicant.copyReqVect[i+1]);
+            }
+            for (int k = 0; k<multiWord.size(); k++){
+//            if (applicant.copyReqVect[i] == indivResume[j]) {
+
+                if(multiWord[k] == indivResume[j] && multiWord[k+1] == indivResume[j+1]){ //Searches for multiple words sent by a user
+                    //cout << "Found Multiple Words" << endl; //cout Not Permanent
+//                    cout<<applicant.copyReqVect[i+1]<<endl;
+                    applicantPoints+=stoi(applicant.copyReqVect[i+1]);
+                    //cout<<applicantPoints<<endl;
+                    multiWord.clear();
+                    break;
+                }
+
+//                //else if(multiWord[k] == indivResume[j]){ //Searches for a single word sent by a user
+//                else if(applicant.copyReqVect[i] == indivResume[j]){
+//                    cout << "Found Single Word" << endl; //cout Not Permanent
+//                    cout<<applicant.copyReqVect[i+1]<<endl;
+//                    applicantPoints+=stoi(applicant.copyReqVect[i+1]);
+//                    multiWord.clear();
+//                }
+
+//                cout << "Found" << endl; //cout Not Permanent
+//                cout<<applicant.copyReqVect[i+1]<<endl;
+//                applicantPoints+=stoi(applicant.copyReqVect[i+1]);
+            }
+        }
+    }
+
+
+
+    //CALCULATIONS
+
+    int divide=100/totalNumPoints;
+    int mult=divide*applicantPoints;
+    cout<<mult<<"% Chance of Being Hired"<<endl;
+
+
 
 
    // applicant.setReq(userInput);
@@ -163,13 +211,11 @@ int main(){
 //        }
 //    }
 
-//    for (int i = 0; i < applicant.copyReqVect.size(); i++){
-    for (int i = 0; i < applicant.copyReqVect.size(); i++){ //NOT PERMANENT
-        cout << applicant.copyReqVect[i] << endl;
-    }
+//    for (int i = 0; i < applicant.copyReqVect.size(); i++){ //NOT PERMANENT
+//        cout << applicant.copyReqVect[i] << endl;
 //    }
 
-    cout << applicant.copyReqVect[1] << endl; //NOT PERMANENT
+//    cout << applicant.copyReqVect[1] << endl; //NOT PERMANENT
 
     infile.close();
     return 0;
@@ -188,11 +234,11 @@ vector<string> split(string line, char delimiter) { //May need to make this a vo
     string word;
     for (int i=0; i<line.size();i++) {
         if (((line[i]) != delimiter) and (i != line.size() - 1)) {
-            word+=line[i];
+            word+=tolower(line[i]); //Sets everything being placed in the resume vector to lowercase (error control)
         }
         else{
             if(i==line.size()-1)
-                word+=line[i];
+                word+=tolower(line[i]); //Sets everything being placed in the resume vector to lowercase (error control)
             vect.push_back(word);
 //            cout << vect[vect.size()-1] << endl; //NOT PERMANENT, NEW
 
