@@ -4,6 +4,12 @@
  * Description: This is the main program that searches through the resume files and returns their match score based on the information the user supplied the program with
  */
 
+//Stuff Remaining:
+//1. Finding the Name - Partially Complete (See line 264 - 268)
+//2. Finding Experience
+//3. Getting the Program to look at multiple resumes (through some sort of vector most likely) - DONE
+//4. Outputting results to a separate file  - DONE (need to make output look better)
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -14,7 +20,8 @@ using namespace std;
 
 vector<string> split(string, char); //Distinguishes in the Resumes individual words
 void requirementSet(string, Applicant*); //This is a menu that activates the same number of times the user indicates to the program how many skills they are looking for in their applicants' resumes
-//vector<vector<string>> allResumes; //NOT USED, Multidimensional Vector used to store all the resume files
+//void experience(int, int);
+vector<vector<string>> allResumes; //Multidimensional Vector used to store all the resume files
 vector <string> indivResume;
 string strip(string);
 
@@ -31,7 +38,6 @@ string strip(string);
 //}
 int counter = 0; //Acts as a counter that is used to increase the current requirement number (only in console output)
 int totalNumPoints = 0; //Used to determine the total number of points possible to be earned by the applicants and used to calculate the percentage match
-int applicantPoints=0;
 bool status; //Acts as a flag used throughout the program
 string userInput; //Used to store all the information passed by the user to the program (ex: skills being looked for in a resume)
 int placeHold; //Used for exception
@@ -39,7 +45,7 @@ string::size_type sz;
 
 int main(){
 
-    Applicant applicant; //Temporary
+    //Applicant applicant; //Temporary
 //    vector<string> myVect;
     //cout << "test" << endl;
     string line; //Used to extract each line from file
@@ -49,18 +55,61 @@ int main(){
 //    infile.open ("Smith Resume.txt", ios::in);
 //    infile.open ("resume v6.txt", ios::in);
 
+
+    if (infile.is_open()) { //Opens the individual resume and assigns it to its own
+        while (getline(infile, line)) {
+//            allResumes.push_back(split(line, ' '))
+            vector<string> myvect = split(line, ' ');
+//            if (myvect[0]!="phone"){
+//                    tempName=myvect[0]+" "+myvect[1];
+//            }
+            for (auto elem : myvect) {
+                indivResume.push_back(elem);
+            }
+        }
+    }
+    allResumes.push_back(indivResume);
+
+    Applicant applicant;
+    infile.close();
+    indivResume.clear();
+    cout<<endl<<endl;
+
+
+    infile.open ("Smith Resume.txt", ios::in);
+
     if (infile.is_open()){ //Opens the individual resume and assigns it to its own
         while(getline(infile, line)){
 //            allResumes.push_back(split(line, ' '))
             vector<string> myvect=split(line, ' ');
+//            if (myvect[0]!="phone"){
+//                    tempName=myvect[0]+" "+myvect[1];
+//            }
             for(auto elem : myvect) {
                 indivResume.push_back(elem);
             }
         }
     }
+    allResumes.push_back(indivResume);
+    indivResume.clear();
+    infile.close();
 
-    cout<<endl<<endl;
-
+    infile.open ("resume v6.txt", ios::in);
+    if (infile.is_open()){ //Opens the individual resume and assigns it to its own
+        while(getline(infile, line)){
+//            allResumes.push_back(split(line, ' '))
+            vector<string> myvect=split(line, ' ');
+//            if (myvect[0]!="phone"){
+//                    tempName=myvect[0]+" "+myvect[1];
+//            }
+            for(auto elem : myvect) {
+                indivResume.push_back(elem);
+            }
+        }
+    }
+    allResumes.push_back(indivResume);
+    indivResume.clear();
+    infile.close();
 
     do{ //Asks the user for how many skills they are looking for
         try {
@@ -108,6 +157,10 @@ int main(){
 //        }
 //    }while(!status);
 
+
+    ofstream outfile;
+    outfile.open ("resumeSearchResults.txt");
+
     for (int i = 0; i< stoi(userInput); i++) {
         requirementSet(userInput, &applicant);
 
@@ -140,6 +193,11 @@ int main(){
         cout << "Empty" << endl;
     }
 
+    for (auto elem : applicant.copyReqVect){
+        outfile<<elem<<endl;
+    }
+    outfile<<endl;
+
 //    for (int i = 0; i < applicant.copyReqVect.size(); i++){
 //        cout << applicant.copyReqVect[i] << endl;
 //    }
@@ -157,32 +215,70 @@ int main(){
 
     vector<string> multiWord;
 
-    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){
-        for(auto elem : applicant.copyReqVect[i]){ //Checks to see if the user inputted multiple words and splits them up accordingly
-            if(isspace(elem)){
-                multiWord=split(applicant.copyReqVect[i],' ');
+    for(auto applicants : allResumes) {
+        string tempName;
+        int applicantPoints = 0;
+        for (int i = 0; i < applicant.copyReqVect.size(); i += 2) {
+            for (auto elem : applicant.copyReqVect[i]) { //Checks to see if the user inputted multiple words and splits them up accordingly
+                if (isspace(elem)) {
+                    multiWord = split(applicant.copyReqVect[i], ' ');
+                }
             }
-        }
 
 //        if(applicant.copyReqVect[i] ==)
-        for (int j = 0; j<indivResume.size(); j++){
-            if(applicant.copyReqVect[i] == indivResume[j]){
-                //cout << "Found Single Word" << endl; //cout Not Permanent
-                //cout<<applicant.copyReqVect[i+1]<<endl;
-                applicantPoints+=stoi(applicant.copyReqVect[i+1]);
-                break;
-            }
-            for (int k = 0; k<multiWord.size(); k++){
-//            if (applicant.copyReqVect[i] == indivResume[j]) {
+            for (int j = 0; j < applicants.size(); j++) {
+                if (applicant.copyReqVect[i] == applicants[j]) { //Searches for a single word requirement sent by a user
+                    //cout << "Found Single Word" << endl; //cout Not Permanent
+                    //cout<<applicant.copyReqVect[i+1]<<endl;
+                    applicantPoints += stoi(applicant.copyReqVect[i + 1]);
 
-                if(multiWord[k] == indivResume[j] && multiWord[k+1] == indivResume[j+1]){ //Searches for multiple words sent by a user
-                    //cout << "Found Multiple Words" << endl; //cout Not Permanent
-//                    cout<<applicant.copyReqVect[i+1]<<endl;
-                    applicantPoints+=stoi(applicant.copyReqVect[i+1]);
-                    //cout<<applicantPoints<<endl;
-                    multiWord.clear();
+                    //--------------------
+
+                    //Need to validate with try catch
+//                    cout << "How many years of experience are you looking for? (Type 'n' if inapplicable): ";
+//                    getline(cin, userInput);
+//                    cout << endl;
+//
+//                    for (int m = 0; m < applicants.size(); m++) {
+////                        cout << applicants[j-m] << endl;
+////                        cout << applicants[j+m] << endl;
+//                        if (applicants[j-m] == "years" || applicants[j-m] == "year" || applicants[j+m] == "years" || applicants[j+m] == "year"){
+//                            for (int n = 0; n < m; n++){
+////                                if (applicants[j-m+n]==)
+//                            }
+////                            if (applicants[j+m] == "years" || applicants[j+m] == "year"){
+////                                cout << applicants[j-m] << endl;
+////                            }
+////
+////                            else if (applicants[j+m] == "years" || applicants[j+m] == "year"){
+////                                cout << applicants[j+m] << endl;
+////                                break;
+////                            }
+//
+//                        }
+//                    }
+
+                    //--------------------
+//                    experience(i, j);
+                    //--------------------
                     break;
                 }
+                for (int k = 0; k < multiWord.size(); k++) {
+//            if (applicant.copyReqVect[i] == indivResume[j]) {
+
+                    if (multiWord[k] == applicants[j] && multiWord[k + 1] == applicants[j +
+                                                                                        1]) { //Searches for a multiple word requirement sent by a user
+                        //cout << "Found Multiple Words" << endl; //cout Not Permanent
+//                    cout<<applicant.copyReqVect[i+1]<<endl;
+                        applicantPoints += stoi(applicant.copyReqVect[i + 1]);
+                        //cout<<applicantPoints<<endl;
+                        multiWord.clear();
+
+                        //------------
+                        //experience(int j, int k);
+                        //------------
+                        break;
+                    }
 
 //                //else if(multiWord[k] == indivResume[j]){ //Searches for a single word sent by a user
 //                else if(applicant.copyReqVect[i] == indivResume[j]){
@@ -195,18 +291,38 @@ int main(){
 //                cout << "Found" << endl; //cout Not Permanent
 //                cout<<applicant.copyReqVect[i+1]<<endl;
 //                applicantPoints+=stoi(applicant.copyReqVect[i+1]);
+                }
             }
+
+
+
+//            if (applicants[0] != "phone" || applicants[1] != "number"){
+//                tempName=applicants[0]+" "+applicants[1];
+//            }
+//            else {
+//                tempName = applicants[2] + " " + applicants[3]
+//            }
+
+            if (applicants[1]!="number"){//||applicants[1]!="number"){
+                tempName=applicants[0]+" "+applicants[1];
+            }else{
+                tempName=applicants[4]+" "+applicants[5]+" "+applicants[6];
+            }
+
+
+
+            //CALCULATIONS
+
+//            int divide = 100 / totalNumPoints;
+//            int mult = divide * applicantPoints;
+//            cout << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
+//            outfile << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
         }
+        int divide = 100 / totalNumPoints;
+        int mult = divide * applicantPoints;
+        cout << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
+        outfile << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
     }
-
-
-
-    //CALCULATIONS
-
-    int divide=100/totalNumPoints;
-    int mult=divide*applicantPoints;
-    cout<<mult<<"% Chance of Being Hired"<<endl;
-
 //    double percentHireRate;
 //    percentHireRate = (double)applicantPoints/totalNumPoints;
 //    cout << percentHireRate << "% Chance of Being Hired" << endl;
@@ -250,7 +366,7 @@ vector<string> split(string line, char delimiter) { //May need to make this a vo
         else{
             if(i==line.size()-1)
                 word+=tolower(line[i]); //Sets everything being placed in the resume vector to lowercase (error control)
-            vect.push_back(strip(word));
+            vect.push_back(strip(word));//Removes punctuation [excluding the "+" sign]
 //            cout << vect[vect.size()-1] << endl; //NOT PERMANENT, NEW
 
             word="";
@@ -259,7 +375,7 @@ vector<string> split(string line, char delimiter) { //May need to make this a vo
     return vect;
 }
 
-void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of the Applicant object
+void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of the Applicant obje
     counter++;
     cout << "What is requirement Number " << counter << "? ";
     getline(cin, userInput);
@@ -280,6 +396,7 @@ void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of 
 
     applicant->setReq(userInput);
 
+
     do {
         try {
             cout<<"On a scale of 1-10 how important is this skill? ";
@@ -293,6 +410,7 @@ void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of 
 //                applicant.setReq(userInput);
                 applicant->setReq(userInput);
                 totalNumPoints += stoi(userInput);
+
             }
         }
         catch (exception e) {
@@ -314,5 +432,14 @@ string strip(string word){
         }
     }
     return tempWord;
-
 }
+
+//void experience(int linePlacement, int positionInResume){
+// //    cout<<allResumes[i][linePlacement][positionInResume]<<endl;
+// //    cout<<indivResume[linePlacement][positionInResume]<<endl;
+//    for (int i = 0; i < indivResume.size(); i++){
+//
+//    }
+//
+// //        cout<<indivResume[linePlacement][positionInResume]<<endl;
+//}

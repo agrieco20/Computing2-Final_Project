@@ -4,6 +4,12 @@
  * Description: This is a TEST program that searches through the resume files and returns their match score based on the information the user supplied the program with
  */
 
+//Stuff Remaining:
+//1. Finding the Name - Partially Complete (See line 264 - 268)
+//2. Finding Experience
+//3. Getting the Program to look at multiple resumes (through some sort of vector most likely) - DONE
+//4. Outputting results to a separate file  - DONE (need to make output look better)
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -52,8 +58,11 @@ int main(){
     if (infile.is_open()){ //Opens the individual resume and assigns it to its own
         while(getline(infile, line)){
 //            allResumes.push_back(split(line, ' '))
-            vector<string> myvect=split(line, ' ');
-            for(auto elem : myvect) {
+            vector<string> myvect = split(line, ' ');
+//            if (myvect[0]!="phone"){
+//                    tempName=myvect[0]+" "+myvect[1];
+//            }
+            for (auto elem : myvect) {
                 indivResume.push_back(elem);
             }
         }
@@ -157,32 +166,70 @@ int main(){
 
     vector<string> multiWord;
 
-    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){
-        for(auto elem : applicant.copyReqVect[i]){ //Checks to see if the user inputted multiple words and splits them up accordingly
-            if(isspace(elem)){
-                multiWord=split(applicant.copyReqVect[i],' ');
+    for(auto applicants : allResumes) {
+        string tempName;
+        int applicantPoints = 0;
+        for (int i = 0; i < applicant.copyReqVect.size(); i += 2) {
+            for (auto elem : applicant.copyReqVect[i]) { //Checks to see if the user inputted multiple words and splits them up accordingly
+                if (isspace(elem)) {
+                    multiWord = split(applicant.copyReqVect[i], ' ');
+                }
             }
-        }
 
 //        if(applicant.copyReqVect[i] ==)
-        for (int j = 0; j<indivResume.size(); j++){
-             if(applicant.copyReqVect[i] == indivResume[j]){
-                //cout << "Found Single Word" << endl; //cout Not Permanent
-                //cout<<applicant.copyReqVect[i+1]<<endl;
-                applicantPoints+=stoi(applicant.copyReqVect[i+1]);
-                break;
-            }
-            for (int k = 0; k<multiWord.size(); k++){
-//            if (applicant.copyReqVect[i] == indivResume[j]) {
+            for (int j = 0; j < applicants.size(); j++) {
+                if (applicant.copyReqVect[i] == applicants[j]) { //Searches for a single word requirement sent by a user
+                    //cout << "Found Single Word" << endl; //cout Not Permanent
+                    //cout<<applicant.copyReqVect[i+1]<<endl;
+                    applicantPoints += stoi(applicant.copyReqVect[i + 1]);
 
-                if(multiWord[k] == indivResume[j] && multiWord[k+1] == indivResume[j+1]){ //Searches for multiple words sent by a user
-                    //cout << "Found Multiple Words" << endl; //cout Not Permanent
-//                    cout<<applicant.copyReqVect[i+1]<<endl;
-                    applicantPoints+=stoi(applicant.copyReqVect[i+1]);
-                    //cout<<applicantPoints<<endl;
-                    multiWord.clear();
+                    //--------------------
+
+                    //Need to validate with try catch
+//                    cout << "How many years of experience are you looking for? (Type 'n' if inapplicable): ";
+//                    getline(cin, userInput);
+//                    cout << endl;
+//
+//                    for (int m = 0; m < applicants.size(); m++) {
+////                        cout << applicants[j-m] << endl;
+////                        cout << applicants[j+m] << endl;
+//                        if (applicants[j-m] == "years" || applicants[j-m] == "year" || applicants[j+m] == "years" || applicants[j+m] == "year"){
+//                            for (int n = 0; n < m; n++){
+////                                if (applicants[j-m+n]==)
+//                            }
+////                            if (applicants[j+m] == "years" || applicants[j+m] == "year"){
+////                                cout << applicants[j-m] << endl;
+////                            }
+////
+////                            else if (applicants[j+m] == "years" || applicants[j+m] == "year"){
+////                                cout << applicants[j+m] << endl;
+////                                break;
+////                            }
+//
+//                        }
+//                    }
+
+                    //--------------------
+//                    experience(i, j);
+                    //--------------------
                     break;
                 }
+                for (int k = 0; k < multiWord.size(); k++) {
+//            if (applicant.copyReqVect[i] == indivResume[j]) {
+
+                    if (multiWord[k] == applicants[j] && multiWord[k + 1] == applicants[j +
+                                                                                        1]) { //Searches for a multiple word requirement sent by a user
+                        //cout << "Found Multiple Words" << endl; //cout Not Permanent
+//                    cout<<applicant.copyReqVect[i+1]<<endl;
+                        applicantPoints += stoi(applicant.copyReqVect[i + 1]);
+                        //cout<<applicantPoints<<endl;
+                        multiWord.clear();
+
+                        //------------
+                        //experience(int j, int k);
+                        //------------
+                        break;
+                    }
 
 //                //else if(multiWord[k] == indivResume[j]){ //Searches for a single word sent by a user
 //                else if(applicant.copyReqVect[i] == indivResume[j]){
@@ -250,7 +297,7 @@ vector<string> split(string line, char delimiter) { //May need to make this a vo
         else{
             if(i==line.size()-1)
                 word+=tolower(line[i]); //Sets everything being placed in the resume vector to lowercase (error control)
-            vect.push_back(strip(word));
+            vect.push_back(strip(word));//Removes punctuation [excluding the "+" sign]
 //            cout << vect[vect.size()-1] << endl; //NOT PERMANENT, NEW
 
             word="";
@@ -314,5 +361,14 @@ string strip(string word){
         }
     }
     return tempWord;
-
 }
+
+//void experience(int linePlacement, int positionInResume){
+// //    cout<<allResumes[i][linePlacement][positionInResume]<<endl;
+// //    cout<<indivResume[linePlacement][positionInResume]<<endl;
+//    for (int i = 0; i < indivResume.size(); i++){
+//
+//    }
+//
+// //        cout<<indivResume[linePlacement][positionInResume]<<endl;
+//}
