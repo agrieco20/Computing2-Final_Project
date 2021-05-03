@@ -6,6 +6,7 @@
 #include "Applicant.h"
 
 Applicant::Applicant(){
+//    this->appName=appName;
 //    this->req1 = req1;
 //    this->req2 = req2;
 //    this->req3 = req3;

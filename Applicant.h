@@ -28,6 +28,7 @@ public:
 
     vector<string> & copyReqVect = reqVect; //Reference Variable
     Applicant();
+    string appName;
 
 //    void setReq1(string input);
 //
