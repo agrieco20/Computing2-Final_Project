@@ -44,8 +44,8 @@ int main(){
     string line; //Used to extract each line from file
 
     ifstream infile;
-//    infile.open ("Abhishek.txt", ios::in);
-    infile.open ("Smith Resume.txt", ios::in);
+    infile.open ("Abhishek.txt", ios::in);
+//    infile.open ("Smith Resume.txt", ios::in);
 //    infile.open ("resume v6.txt", ios::in);
 
     if (infile.is_open()){ //Opens the individual resume and assigns it to its own
@@ -61,7 +61,7 @@ int main(){
     cout<<endl<<endl;
 
 
-    do{ //Asks the user for how many points
+    do{ //Asks the user for how many skills they are looking for
         try {
             cout<<"How many skills are you looking for your applicants to have? ";
             getline(cin, userInput);
@@ -156,12 +156,13 @@ int main(){
 
     vector<string> multiWord;
 
-    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){//TEST
+    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){
         for(auto elem : applicant.copyReqVect[i]){ //Checks to see if the user inputted multiple words and splits them up accordingly
             if(isspace(elem)){
                 multiWord=split(applicant.copyReqVect[i],' ');
             }
         }
+
 //        if(applicant.copyReqVect[i] ==)
         for (int j = 0; j<indivResume.size(); j++){
              if(applicant.copyReqVect[i] == indivResume[j]){
@@ -203,6 +204,10 @@ int main(){
     int divide=100/totalNumPoints;
     int mult=divide*applicantPoints;
     cout<<mult<<"% Chance of Being Hired"<<endl;
+
+//    double percentHireRate;
+//    percentHireRate = (double)applicantPoints/totalNumPoints;
+//    cout << percentHireRate << "% Chance of Being Hired" << endl;
 
 
 
