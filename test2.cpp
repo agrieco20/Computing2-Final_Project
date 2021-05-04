@@ -5,7 +5,7 @@
  */
 
 //Stuff Remaining:
-//1. Finding the Name - Partially Complete (See line 264 - 268)
+//1. Finding the Name - Partially Complete (See line 321 - 326)
 //2. Finding Experience
 //3. Getting the Program to look at multiple resumes (through some sort of vector most likely) - DONE
 //4. Outputting results to a separate file  - DONE (need to make output look better)
@@ -193,10 +193,25 @@ int main(){
         cout << "Empty" << endl;
     }
 
-    for (auto elem : applicant.copyReqVect){
-        outfile<<elem<<endl;
+    //The following prints the requirements given by the user to both the console and the outfile "resumeSearchResults"
+    cout << "Requirements: " << endl;
+    outfile << "Requirements:" << endl;
+    for (int i = 0; i<applicant.copyReqVect.size(); i+=2){ //Formatting so that the first letter of each word is capitalized
+        cout << (char) toupper(applicant.copyReqVect[i][0]);
+        outfile << (char) toupper(applicant.copyReqVect[i][0]);
+        for (int j = 1; j<applicant.copyReqVect[i].size(); j++){
+            cout << applicant.copyReqVect[i][j];
+            outfile << applicant.copyReqVect[i][j];
+        }
+        cout << endl;
+        outfile << endl;
     }
-    outfile<<endl;
+    cout << "***********************************" << endl;
+    outfile << "***********************************" << endl;
+//    for (auto elem : applicant.copyReqVect){
+//        outfile<<elem<<endl;
+//    }
+//    outfile<<endl;
 
 //    for (int i = 0; i < applicant.copyReqVect.size(); i++){
 //        cout << applicant.copyReqVect[i] << endl;
@@ -240,20 +255,20 @@ int main(){
 //                    cout << endl;
 //
 //                    for (int m = 0; m < applicants.size(); m++) {
-////                        cout << applicants[j-m] << endl;
-////                        cout << applicants[j+m] << endl;
+// //                        cout << applicants[j-m] << endl;
+// //                        cout << applicants[j+m] << endl;
 //                        if (applicants[j-m] == "years" || applicants[j-m] == "year" || applicants[j+m] == "years" || applicants[j+m] == "year"){
 //                            for (int n = 0; n < m; n++){
-////                                if (applicants[j-m+n]==)
+// //                                if (applicants[j-m+n]==)
 //                            }
-////                            if (applicants[j+m] == "years" || applicants[j+m] == "year"){
-////                                cout << applicants[j-m] << endl;
-////                            }
-////
-////                            else if (applicants[j+m] == "years" || applicants[j+m] == "year"){
-////                                cout << applicants[j+m] << endl;
-////                                break;
-////                            }
+// //                            if (applicants[j+m] == "years" || applicants[j+m] == "year"){
+// //                                cout << applicants[j-m] << endl;
+// //                            }
+// //
+// //                            else if (applicants[j+m] == "years" || applicants[j+m] == "year"){
+// //                                cout << applicants[j+m] << endl;
+// //                                break;
+// //                            }
 //
 //                        }
 //                    }
@@ -266,9 +281,8 @@ int main(){
                 for (int k = 0; k < multiWord.size(); k++) {
 //            if (applicant.copyReqVect[i] == indivResume[j]) {
 
-                    if (multiWord[k] == applicants[j] && multiWord[k + 1] == applicants[j +
-                                                                                        1]) { //Searches for a multiple word requirement sent by a user
-                        //cout << "Found Multiple Words" << endl; //cout Not Permanent
+                    if (multiWord[k] == applicants[j] && multiWord[k + 1] == applicants[j + 1]) { //Searches for a multiple word requirement sent by a user
+                        //cout << "Found Multiple Words" << endl; //Not Permanent
 //                    cout<<applicant.copyReqVect[i+1]<<endl;
                         applicantPoints += stoi(applicant.copyReqVect[i + 1]);
                         //cout<<applicantPoints<<endl;
@@ -303,32 +317,46 @@ int main(){
 //                tempName = applicants[2] + " " + applicants[3]
 //            }
 
-            if (applicants[1]!="number"){//||applicants[1]!="number"){
+            if (applicants[0] != "phone" && applicants[0] != "email" && applicants[1]!="number"){//||applicants[1]!="number"){
                 tempName=applicants[0]+" "+applicants[1];
-            }else{
-                tempName=applicants[4]+" "+applicants[5]+" "+applicants[6];
+            }
+            else{
+                tempName=applicants[4]+" "+applicants[5]+" "+applicants[6]; //Should be able to change to 3, 4, and 5, respectively [may even be able to cut out the 5 altogether]
             }
 
-
-
             //CALCULATIONS
-
 //            int divide = 100 / totalNumPoints;
 //            int mult = divide * applicantPoints;
 //            cout << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
 //            outfile << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
         }
+
+        //Calculates the Percent Match between what the user has inputted and the values in each resume
         int divide = 100 / totalNumPoints;
         int mult = divide * applicantPoints;
-        cout << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
-        outfile << tempName << endl << mult << "% Chance of Being Hired" << endl << endl;
+
+        double percentHireRate = (100 / totalNumPoints) * applicantPoints;
+
+        for (int i = 0; i<tempName.size(); i++){ //Formatting so that the first letter of each name is capitalized
+            if (i == 0 || tempName[i-1] == ' ' || tempName[i-1] == '\n') {
+//                cout << tempName[i] << endl; //NOT PERMANENT
+                cout << (char) toupper(tempName[i]);
+                outfile << (char) toupper(tempName[i]);
+
+            }
+            else {
+                cout << tempName[i];
+                outfile << tempName[i];
+            }
+        }
+        cout << endl;
+        outfile << endl;
+        cout << mult << "% Chance of Being Hired" << endl << endl << endl;
+        outfile << endl << mult << "% Chance of Being Hired" << endl << endl << endl;
     }
 //    double percentHireRate;
 //    percentHireRate = (double)applicantPoints/totalNumPoints;
 //    cout << percentHireRate << "% Chance of Being Hired" << endl;
-
-
-
 
    // applicant.setReq(userInput);
 
@@ -343,6 +371,7 @@ int main(){
 //    }
 
 //    cout << applicant.copyReqVect[1] << endl; //NOT PERMANENT
+    cout << "***The above values have also been outputted to the .txt file named 'resumeSearchResults.txt' for your convenience.***" << endl;
 
     infile.close();
     return 0;
