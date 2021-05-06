@@ -36,7 +36,8 @@ string strip(string); //Used to strip non-essential punctuation from each word i
 //    infile.close();
 //    return 0;
 //}
-int counter = 0; //Acts as a counter that is used to increase the current requirement number (only in console output)
+int counter = 0;//Acts as a counter that is used to increase the current requirement number (only in console output)
+int counter2 = 0;
 int totalNumPoints = 0; //Used to determine the total number of points possible to be earned by the applicants and used to calculate the percentage match
 bool status; //Acts as a flag used throughout the program
 string userInput; //Used to store all the information passed by the user to the program (ex: skills being looked for in a resume)
@@ -289,6 +290,7 @@ int main(){
                 if (applicant.copyReqVect[i] == applicants[j]) {
                     //cout << "Found Single Word" << endl; //Not Permanent
                     //cout<<applicant.copyReqVect[i+1]<<endl;
+//                    counter2+=1;
                     applicantPoints += stoi(applicant.copyReqVect[i + 1]); //The value after the required skill is the total possible point value associated with it
                     foundReq.push_back(applicant.copyReqVect[i]);
 
@@ -505,6 +507,7 @@ int main(){
         }
         cout << endl;
         outfile << endl;
+//        cout<<"Counter: "<<counter2<<endl;
         cout << "Skills Match: " << mult << "%" << endl;
         outfile << "Skills Match: " << mult << "%" << endl;
 
@@ -546,6 +549,7 @@ int main(){
         //outfile<<"Number of years in " << foundReq <<": " << endl << experience << endl<<endl<<endl;
         experience.clear();
         foundReq.clear();
+//        counter2=0;
     }
 //    double perHireRate;
 //    percentHireRate = (double)applicantPoints/totalNumPoints;
