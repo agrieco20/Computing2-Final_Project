@@ -42,6 +42,8 @@ bool status; //Acts as a flag used throughout the program
 string userInput; //Used to store all the information passed by the user to the program (ex: skills being looked for in a resume)
 int placeHold; //Used for exceptions
 string::size_type sz;
+vector<string> experience; //Used to store the experience (number of years) corresponding to a person's skill as specified by the user of the program
+vector<string> foundReq; //Used to store the name of the skill being searched for by the user
 
 int main(){
     bool realFileVerify = true;
@@ -529,7 +531,7 @@ int main(){
         experience.clear();
         foundReq.clear();
     }
-//    double percentHireRate;
+//    double petHireRate;
 //    percentHireRate = (double)applicantPoints/totalNumPoints;
 //    cout << percentHireRate << "% Chance of Being Hired" << endl;
 
@@ -630,7 +632,7 @@ void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of 
 string strip(string word){
     string tempWord;
     for(auto letter : word){
-        if(!ispunct(letter) or letter=='+'){
+        if(!ispunct(letter) or letter=='+' or letter=='#'){
              tempWord+=letter;
         }
     }
