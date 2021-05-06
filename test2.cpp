@@ -515,13 +515,29 @@ int main(){
 
         cout<< "Number of Years in ";
         outfile << "Number of Years in ";
-        for(auto elem : foundReq){
+
+
+//        if (experience.size() > foundReq.size()){
+
+//            for (int i = 0; i < experience.size(); i++){
+//                if (experience.size() > counter2){
+//                    experience.pop_back();
+//
+//                }
+//            }
+
+//        }
+//        for (int i = 0; i < foundReq.size(); i++){
+// //            if();
+//        }
+
+        for(auto elem : foundReq){ //Causing Michael Smith's section to cout too many requirements that it doesn't even have
             cout << elem << " ";
             outfile << elem << " ";
         }
         cout << ": " << endl;
         outfile << ": " << endl;
-        for(auto elem : experience){
+        for(auto elem : experience){ //Causing Michael Smith's section to cout "10+ years" too many times
             cout<<elem<<" years, ";
             outfile<<elem<<" years, ";
         }
@@ -531,7 +547,7 @@ int main(){
         experience.clear();
         foundReq.clear();
     }
-//    double petHireRate;
+//    double perHireRate;
 //    percentHireRate = (double)applicantPoints/totalNumPoints;
 //    cout << percentHireRate << "% Chance of Being Hired" << endl;
 
