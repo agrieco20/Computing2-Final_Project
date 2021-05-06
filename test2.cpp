@@ -56,8 +56,8 @@ int main(){
     if (dr) {
         while ((en = readdir(dr)) != NULL) {
             if (fileVector.size() > 1 && realFileVerify == true){ //Removes the files named "." and ".." from the vector to not mess with the actual resume files
-                    fileVector.clear();
-                    realFileVerify = false;
+                fileVector.clear();
+                realFileVerify = false;
             }
             fileVector.push_back(en->d_name);
         }
@@ -199,8 +199,8 @@ int main(){
 //    }while(!status);
 
     //Opens a file named "resumeSearchResults.txt" that will be written to
-   ofstream outfile;
-   outfile.open ("resumeSearchResults.txt");
+    ofstream outfile;
+    outfile.open ("resumeSearchResults.txt");
 
     for (int i = 0; i< stoi(userInput); i++) {
         requirementSet(userInput, &applicant);
@@ -311,11 +311,11 @@ int main(){
                         experience.push_back("1");
                     }
 
-    //                        else if (applicants[j - m] == "years"){
-    //                            cout << "Number of Years: " << applicants[j-m-1] << endl;
-    //                            break;
-    //                        }
-                       // if (isFound == false) {
+                    //                        else if (applicants[j - m] == "years"){
+                    //                            cout << "Number of Years: " << applicants[j-m-1] << endl;
+                    //                            break;
+                    //                        }
+                    // if (isFound == false) {
 //                       for(int m = 0; m < applicants.size(); m++){
 //                           if(applicants[j-m] == "years" || applicants[j+m] == "years"){
 //                               experience = applicants[j-m-1];
@@ -535,7 +535,7 @@ int main(){
 //    percentHireRate = (double)applicantPoints/totalNumPoints;
 //    cout << percentHireRate << "% Chance of Being Hired" << endl;
 
-   // applicant.setReq(userInput);
+    // applicant.setReq(userInput);
 
 //    for(auto elem : allResumes){ //Used to see whether the allResumes vector was receiving the vector sent to it (printed out values within it)
 //        for(auto word : elem){
@@ -550,6 +550,7 @@ int main(){
 //    cout << applicant.copyReqVect[1] << endl; //NOT PERMANENT
     cout << "***The above values have also been outputted to the .txt file named 'resumeSearchResults.txt' for your convenience.***" << endl;
 
+    outfile.close();
     infile.close();
     return 0;
 }
@@ -633,7 +634,7 @@ string strip(string word){
     string tempWord;
     for(auto letter : word){
         if(!ispunct(letter) or letter=='+' or letter=='#'){
-             tempWord+=letter;
+            tempWord+=letter;
         }
     }
     return tempWord;

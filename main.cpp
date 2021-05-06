@@ -550,6 +550,7 @@ int main(){
 //    cout << applicant.copyReqVect[1] << endl; //NOT PERMANENT
     cout << "***The above values have also been outputted to the .txt file named 'resumeSearchResults.txt' for your convenience.***" << endl;
 
+    outfile.close();
     infile.close();
     return 0;
 }
