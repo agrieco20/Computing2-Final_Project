@@ -6,44 +6,8 @@
 #include "Applicant.h"
 
 Applicant::Applicant(){
-//    this->appName=appName;
-//    this->req1 = req1;
-//    this->req2 = req2;
-//    this->req3 = req3;
-//    this->req4 = req4;
+
 }
-
-//void Applicant::setReq1(string input){
-//    req1=input;
-//}
-//
-//void Applicant::setReq2(string input){
-//    req1=input;
-//}
-//
-//void Applicant::setReq3(string input){
-//    req1=input;
-//}
-//
-//void Applicant::setReq4(string input){
-//    req1=input;
-//}
-
-//void Applicant::setReq1Value(string input){
-//    req1Value=stoi(input);
-//}
-//
-//void Applicant::setReq2Value(string input){
-//    req2Value=stoi(input);
-//}
-//
-//void Applicant::setReq3Value(string input){
-//    req3Value=stoi(input);
-//}
-//
-//void Applicant::setReq4Value(string input){
-//    req4Value=stoi(input);
-//}
 
 void Applicant::setReq(string input){
     reqVect.push_back(input);
