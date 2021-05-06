@@ -40,7 +40,7 @@ int counter = 0; //Acts as a counter that is used to increase the current requir
 int totalNumPoints = 0; //Used to determine the total number of points possible to be earned by the applicants and used to calculate the percentage match
 bool status; //Acts as a flag used throughout the program
 string userInput; //Used to store all the information passed by the user to the program (ex: skills being looked for in a resume)
-//int placeHold; //Used for exceptions
+int placeHold; //Used for exceptions
 string::size_type sz;
 vector<string> experience; //Used to store the experience (number of years) corresponding to a person's skill as specified by the user of the program
 vector<string> foundReq; //Used to store the name of the skill being searched for by the user
@@ -157,7 +157,7 @@ int main(){
             cout<<"How many skills are you looking for your applicants to have? ";
             getline(cin, userInput);
             cout << endl;
-//            placeHold=stoi(userInput,&sz);
+            placeHold=stoi(userInput,&sz);
             status=true;
         }
         catch (exception e) {
@@ -608,9 +608,9 @@ void requirementSet(string userInput, Applicant* applicant){ //Sends pointer of 
             cout<<"On a scale of 1-10 how important is this skill? ";
             getline(cin, userInput);
             cout << endl;
-//            placeHold=stoi(userInput,&sz);
+            placeHold=stoi(userInput,&sz);
             status=true;
-            if (stoi(userInput)<1 or stoi(userInput)>10) {
+            if (placeHold<1 or placeHold>10) {
                 status = false;
             }else{
 //                applicant.setReq(userInput);
